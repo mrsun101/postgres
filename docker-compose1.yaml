@@ -1,0 +1,38 @@
+# Use postgres/example user/password credentials
+version: '3.8'
+
+networks:
+    postgres:
+        ipam:
+            driver: default
+            config:
+                 - subnet: 192.168.0.0/24
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: root
+    volumes:
+        - ./bd:/var/lib/postgresql/data
+    ports:
+        - 5432:5432
+    networks:
+        postgres: 
+            ipv4_address: 192.168.0.4    
+
+   pgadmin4:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+        - "5050:80"
+    networks:
+        postgres: 
+            ipv4_address: 192.168.0.2
+      
